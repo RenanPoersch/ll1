@@ -97,6 +97,7 @@ thead { background: #f0edeb; color: var(--muted); }
 th, td { border-bottom: 1px solid var(--line); padding: 13px 16px; }
 td { overflow-wrap: anywhere; }
 .trace-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 16px; }
+.reset-analysis { margin-inline-start: auto; }
 .trace { overflow: auto; max-height: clamp(420px, 66vh, 760px); scrollbar-color: #8ca49d transparent; }
 .trace table { min-width: 420px; table-layout: fixed; font-size: clamp(14px, 1.6vw, 21px); }
 .trace thead { position: sticky; top: 0; z-index: 1; }

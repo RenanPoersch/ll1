@@ -13,20 +13,18 @@
   <div class="workspace">
     <section class="analysis" aria-labelledby="steps-title">
       <h1 id="steps-title">Passos da análise</h1>
+      @let manualInProgress = result && mode === 'manual' && !finished;
       <div class="trace-controls">
-        <button class="button primary" type="button" (click)="run('manual')">Iniciar passo a passo</button>
+        <button class="button primary" type="button" (click)="manualInProgress ? advance() : run('manual')">
+          {{ manualInProgress ? 'Próximo passo' : 'Iniciar passo a passo' }}
+        </button>
         <button class="button primary" type="button" (click)="run('automatic')">Analisar automaticamente</button>
+        @if (result) {
+          <button class="button text reset-analysis" type="button" (click)="reset(input)">Nova análise</button>
+        }
       </div>
-      @if (result) {
-        <div class="trace-controls">
-          @if (mode === 'manual' && !finished) {
-            <button class="button outlined" type="button" (click)="advance()">Próximo passo</button>
-          }
-          @if (mode === 'automatic' && !finished) {
-            <span class="hint" role="status">Analisando automaticamente…</span>
-          }
-          <button class="button text" type="button" (click)="reset(input)">Nova análise</button>
-        </div>
+      @if (result && mode === 'automatic' && !finished) {
+        <p class="hint" role="status">Analisando automaticamente…</p>
       }
       <div class="trace" #trace tabindex="0" aria-label="Histórico da análise">
         <table>
