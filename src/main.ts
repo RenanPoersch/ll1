@@ -42,17 +42,12 @@ class AppComponent {
     return this.result?.steps[this.selectedStep]?.lookup;
   }
 
-  run(): void {
+  run(mode: 'manual' | 'automatic'): void {
     this.clearAnalysis();
+    this.mode = mode;
     this.result = analyze(this.sentence);
     this.advance();
-    this.setMode(this.mode);
-  }
-
-  setMode(mode: 'manual' | 'automatic'): void {
-    this.mode = mode;
-    this.stopTimer();
-    if (mode === 'automatic' && this.result && !this.finished) {
+    if (mode === 'automatic' && !this.finished) {
       this.timer = setInterval(() => this.advance(), 600);
     }
   }

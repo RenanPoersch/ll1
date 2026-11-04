@@ -33,7 +33,7 @@ main { padding: 0 16px 16px; }
 
 .sentence-form {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(130px, 15%) minmax(172px, 20%);
+  grid-template-columns: minmax(0, 1fr) minmax(172px, 20%);
   gap: clamp(12px, 2vw, 28px);
   align-items: center;
   padding: 54px 16px 32px;
@@ -96,16 +96,6 @@ table { width: 100%; border-collapse: collapse; text-align: left; }
 thead { background: #f0edeb; color: var(--muted); }
 th, td { border-bottom: 1px solid var(--line); padding: 13px 16px; }
 td { overflow-wrap: anywhere; }
-.analysis-mode {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 20px;
-  border: 0;
-  margin: 0 0 20px;
-  padding: 0;
-}
-.analysis-mode legend { margin-bottom: 8px; font-weight: 600; }
-.analysis-mode .button[aria-pressed="true"] { background: var(--selection); }
 .trace-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 16px; }
 .trace { overflow: auto; max-height: clamp(420px, 66vh, 760px); scrollbar-color: #8ca49d transparent; }
 .trace table { min-width: 420px; table-layout: fixed; font-size: clamp(14px, 1.6vw, 21px); }
@@ -115,6 +105,7 @@ td { overflow-wrap: anywhere; }
 .trace td:first-child { padding: 5px 10px; }
 .trace tbody tr { height: 64px; cursor: pointer; }
 .trace tbody tr:hover { background: #e4eee9; }
+.trace tbody .initial-step { cursor: default; background: transparent; }
 .selected, .trace tbody tr.selected:hover { background: var(--selection); }
 .step-number {
   border: 0;
@@ -141,7 +132,7 @@ td { overflow-wrap: anywhere; }
 }
 .notice span { font-size: 16px; margin-top: 4px; }
 .notice.rejected { background: #fce5e0; color: #8c2419; }
-.empty, .hint { color: var(--muted); }
+.hint { color: var(--muted); }
 
 .panels {
   display: flex;

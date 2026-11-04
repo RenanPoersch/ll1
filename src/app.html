@@ -1,55 +1,59 @@
 <header class="toolbar">Analisador LL(1)</header>
 
 <main>
-  <form class="sentence-form" (ngSubmit)="run()">
+  <div class="sentence-form">
     <div class="field">
       <label for="sentence">Sentença</label>
       <input id="sentence" #input name="sentence" [(ngModel)]="sentence"
         (ngModelChange)="clearAnalysis()" autocomplete="off" spellcheck="false" maxlength="256">
     </div>
-    <button class="button primary" type="submit">Analisar</button>
     <button class="button outlined" type="button" (click)="generate()">Gerar sentença</button>
-  </form>
+  </div>
 
   <div class="workspace">
     <section class="analysis" aria-labelledby="steps-title">
       <h1 id="steps-title">Passos da análise</h1>
-      <fieldset class="analysis-mode">
-        <legend>Modo de análise</legend>
-        <button class="button outlined" type="button" [attr.aria-pressed]="mode === 'manual'"
-          (click)="setMode('manual')">Passo a passo</button>
-        <button class="button outlined" type="button" [attr.aria-pressed]="mode === 'automatic'"
-          (click)="setMode('automatic')">Automático</button>
-      </fieldset>
-      @if (result; as analysis) {
+      <div class="trace-controls">
+        <button class="button primary" type="button" (click)="run('manual')">Iniciar passo a passo</button>
+        <button class="button primary" type="button" (click)="run('automatic')">Analisar automaticamente</button>
+      </div>
+      @if (result) {
         <div class="trace-controls">
           @if (mode === 'manual' && !finished) {
-            <button class="button primary" type="button" (click)="advance()">Próximo passo</button>
+            <button class="button outlined" type="button" (click)="advance()">Próximo passo</button>
           }
           @if (mode === 'automatic' && !finished) {
             <span class="hint" role="status">Analisando automaticamente…</span>
           }
           <button class="button text" type="button" (click)="reset(input)">Nova análise</button>
         </div>
-        <div class="trace" #trace tabindex="0" aria-label="Histórico da análise">
-          <table>
-            <thead>
-              <tr><th scope="col">Passo</th><th scope="col">Pilha</th><th scope="col">Entrada</th><th scope="col">Ação</th></tr>
-            </thead>
-            <tbody>
-              @for (step of analysis.steps.slice(0, visibleCount()); track $index) {
-                <tr [class.selected]="selectedStep === $index" (click)="selectedStep = $index">
-                  <td><button type="button" class="step-number" [attr.aria-pressed]="selectedStep === $index"
-                    [attr.aria-label]="'Selecionar passo ' + ($index + 1)"
-                    (click)="selectedStep = $index">{{ $index + 1 }}</button></td>
-                  <td><code>{{ step.stack }}</code></td>
-                  <td><code>{{ step.input }}</code></td>
-                  <td>{{ step.action }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
+      }
+      <div class="trace" #trace tabindex="0" aria-label="Histórico da análise">
+        <table>
+          <thead>
+            <tr><th scope="col">Passo</th><th scope="col">Pilha</th><th scope="col">Entrada</th><th scope="col">Ação</th></tr>
+          </thead>
+          <tbody>
+            <tr class="initial-step">
+              <td>0</td>
+              <td><code>$</code></td>
+              <td>—</td>
+              <td>Pilha inicial</td>
+            </tr>
+            @for (step of result ? result.steps.slice(0, visibleCount()) : []; track $index) {
+              <tr [class.selected]="selectedStep === $index" (click)="selectedStep = $index">
+                <td><button type="button" class="step-number" [attr.aria-pressed]="selectedStep === $index"
+                  [attr.aria-label]="'Selecionar passo ' + ($index + 1)"
+                  (click)="selectedStep = $index">{{ $index + 1 }}</button></td>
+                <td><code>{{ step.stack }}</code></td>
+                <td><code>{{ step.input }}</code></td>
+                <td>{{ step.action }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      @if (result; as analysis) {
         @if (finished) {
           <div class="outcome">
             <div class="notice" [class.rejected]="!analysis.accepted" role="status">
@@ -58,8 +62,6 @@
             </div>
           </div>
         }
-      } @else {
-        <p class="empty">Digite ou gere uma sentença e selecione Analisar.</p>
       }
     </section>
     <section class="reference" aria-labelledby="reference-title">
