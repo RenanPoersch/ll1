@@ -45,5 +45,59 @@
         <p class="empty">Digite ou gere uma sentença e selecione Analisar.</p>
       }
     </section>
+    <section class="reference" aria-labelledby="reference-title">
+      <h2 id="reference-title">Consulta</h2>
+      <nav class="panels" aria-label="Material de consulta">
+        @for (panel of panels; track panel.id) {
+          <button type="button" [attr.aria-pressed]="activePanel === panel.id"
+            (click)="activePanel = panel.id">{{ panel.label }}</button>
+        }
+      </nav>
+      @switch (activePanel) {
+        @case ('grammar') {
+          <ol class="grammar">
+            @for (symbol of nonTerminals; track symbol) {
+              <li [class.selected]="selectedRule === symbol">
+                <code>{{ symbol }} → @for (production of grammar[symbol]; track $index) {
+                  @if (!$first) { <span class="alternative"> | </span> }{{ formatProduction(production) }}
+                }</code>
+              </li>
+            }
+          </ol>
+        }
+        @case ('parsing') {
+          <div class="reference-table" tabindex="0" aria-label="Tabela de parsing">
+            <table>
+              <thead><tr><th scope="col">Regra</th>
+                @for (token of terminals; track token) { <th scope="col"><code>{{ token }}</code></th> }
+              </tr></thead>
+              <tbody>
+                @for (symbol of nonTerminals; track symbol) {
+                  <tr [class.selected]="selectedRule === symbol">
+                    <th scope="row"><code>{{ symbol }}</code></th>
+                    @for (token of terminals; track token) { <td><code>{{ tableCell(symbol, token) }}</code></td> }
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <p class="hint">— indica que não há produção para essa combinação.</p>
+        }
+        @case ('sets') {
+          <table class="sets">
+            <thead><tr><th scope="col">Regra</th><th scope="col">FIRST</th><th scope="col">FOLLOW</th></tr></thead>
+            <tbody>
+              @for (symbol of nonTerminals; track symbol) {
+                <tr [class.selected]="selectedRule === symbol">
+                  <th scope="row"><code>{{ symbol }}</code></th>
+                  <td><code>{{ firstFollow[symbol].first }}</code></td>
+                  <td><code>{{ firstFollow[symbol].follow }}</code></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      }
+    </section>
   </div>
 </main>
