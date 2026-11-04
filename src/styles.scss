@@ -105,8 +105,7 @@ td { overflow-wrap: anywhere; }
   padding: 0;
 }
 .analysis-mode legend { margin-bottom: 8px; font-weight: 600; }
-.analysis-mode label { display: flex; align-items: center; gap: 6px; min-height: 32px; }
-.analysis-mode input { accent-color: var(--primary); }
+.analysis-mode .button[aria-pressed="true"] { background: var(--selection); }
 .trace-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 16px; }
 .trace { overflow: auto; max-height: clamp(420px, 66vh, 760px); scrollbar-color: #8ca49d transparent; }
 .trace table { min-width: 420px; table-layout: fixed; font-size: clamp(14px, 1.6vw, 21px); }

@@ -16,10 +16,10 @@
       <h1 id="steps-title">Passos da análise</h1>
       <fieldset class="analysis-mode">
         <legend>Modo de análise</legend>
-        <label><input type="radio" name="mode" [checked]="mode === 'manual'"
-          (change)="setMode('manual')"> Passo a passo</label>
-        <label><input type="radio" name="mode" [checked]="mode === 'automatic'"
-          (change)="setMode('automatic')"> Automático</label>
+        <button class="button outlined" type="button" [attr.aria-pressed]="mode === 'manual'"
+          (click)="setMode('manual')">Passo a passo</button>
+        <button class="button outlined" type="button" [attr.aria-pressed]="mode === 'automatic'"
+          (click)="setMode('automatic')">Automático</button>
       </fieldset>
       @if (result; as analysis) {
         <div class="trace-controls">
