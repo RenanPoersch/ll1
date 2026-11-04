@@ -9,7 +9,7 @@ import { analyze, firstFollow, formatProduction, generateSentence, grammar, nonT
   templateUrl: './app.html',
 })
 class AppComponent {
-  sentence = 'a+b';
+  sentence = '0+1';
   result: Analysis | null = null;
   selectedStep = 0;
   mode: 'manual' | 'automatic' = 'manual';

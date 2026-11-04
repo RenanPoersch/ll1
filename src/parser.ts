@@ -1,5 +1,5 @@
 export const nonTerminals = ['S', 'A', 'B', 'C', 'D'] as const;
-export const terminals = ['a', 'b', '+', '*', '(', ')', '$'] as const;
+export const terminals = ['0', '1', '+', '*', '(', ')', '$'] as const;
 type NonTerminal = typeof nonTerminals[number];
 type Terminal = typeof terminals[number];
 
@@ -8,24 +8,24 @@ export const grammar: Record<NonTerminal, readonly (readonly string[])[]> = {
   A: [['+', 'B', 'A'], []],
   B: [['D', 'C']],
   C: [['*', 'D', 'C'], []],
-  D: [['(', 'S', ')'], ['a'], ['b']],
+  D: [['(', 'S', ')'], ['0'], ['1']],
 };
 
 export const firstFollow: Record<NonTerminal, { first: string; follow: string }> = {
-  S: { first: '(, a, b', follow: '), $' },
+  S: { first: '(, 0, 1', follow: '), $' },
   A: { first: '+, ε', follow: '), $' },
-  B: { first: '(, a, b', follow: '+, ), $' },
+  B: { first: '(, 0, 1', follow: '+, ), $' },
   C: { first: '*, ε', follow: '+, ), $' },
-  D: { first: '(, a, b', follow: '*, +, ), $' },
+  D: { first: '(, 0, 1', follow: '*, +, ), $' },
 };
 
 // Cada célula guarda o índice da produção em grammar.
 const table: Record<NonTerminal, Partial<Record<Terminal, number>>> = {
-  S: { '(': 0, a: 0, b: 0 },
+  S: { '(': 0, '0': 0, '1': 0 },
   A: { '+': 0, ')': 1, $: 1 },
-  B: { '(': 0, a: 0, b: 0 },
+  B: { '(': 0, '0': 0, '1': 0 },
   C: { '*': 0, '+': 1, ')': 1, $: 1 },
-  D: { '(': 0, a: 1, b: 2 },
+  D: { '(': 0, '0': 1, '1': 2 },
 };
 
 export function formatProduction(symbols: readonly string[], separator = ' '): string {
