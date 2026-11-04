@@ -69,9 +69,7 @@
           <ol class="grammar">
             @for (symbol of nonTerminals; track symbol) {
               <li [class.selected]="selectedLookup?.symbol === symbol">
-                <code>{{ symbol }} → @for (production of grammar[symbol]; track $index) {
-                  @if (!$first) {&nbsp;|&nbsp;}{{ formatProduction(production, '') }}
-                }</code>
+                <code>{{ formatGrammarRule(symbol) }}</code>
               </li>
             }
           </ol>

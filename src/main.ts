@@ -23,12 +23,15 @@ class AppComponent {
     { id: 'parsing', label: 'Tabela de parsing' },
     { id: 'sets', label: 'FIRST / FOLLOW' },
   ];
-  readonly grammar = grammar;
   readonly nonTerminals = nonTerminals;
   readonly terminals = terminals;
   readonly firstFollow = firstFollow;
-  readonly formatProduction = formatProduction;
   readonly tableCell = tableCell;
+
+  formatGrammarRule(symbol: keyof typeof grammar): string {
+    const alternatives = grammar[symbol].map(production => formatProduction(production, ''));
+    return symbol + ' → ' + alternatives.join(' | ');
+  }
 
   constructor() {
     inject(DestroyRef).onDestroy(() => this.stopTimer());
