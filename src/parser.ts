@@ -28,8 +28,8 @@ const table: Record<NonTerminal, Partial<Record<Terminal, number>>> = {
   D: { '(': 0, a: 1, b: 2 },
 };
 
-export function formatProduction(symbols: readonly string[]): string {
-  return symbols.join(' ') || 'ε';
+export function formatProduction(symbols: readonly string[], separator = ' '): string {
+  return symbols.join(separator) || 'ε';
 }
 
 export function tableCell(symbol: NonTerminal, token: Terminal): string {

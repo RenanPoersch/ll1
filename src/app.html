@@ -70,7 +70,7 @@
             @for (symbol of nonTerminals; track symbol) {
               <li [class.selected]="selectedLookup?.symbol === symbol">
                 <code>{{ symbol }} → @for (production of grammar[symbol]; track $index) {
-                  @if (!$first) { <span class="alternative"> | </span> }{{ formatProduction(production) }}
+                  @if (!$first) { <span class="alternative"> | </span> }{{ formatProduction(production, '') }}
                 }</code>
               </li>
             }
