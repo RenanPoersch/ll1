@@ -131,7 +131,9 @@ td { overflow-wrap: anywhere; }
   font-size: clamp(18px, 2vw, 26px);
 }
 .notice span { font-size: 16px; margin-top: 4px; }
-.notice.rejected { background: #fce5e0; color: #8c2419; }
+.notice.rejected,
+.trace tbody tr.rejected,
+.trace tbody tr.rejected:hover { background: #fce5e0; color: #8c2419; }
 .hint { color: var(--muted); }
 
 .panels {

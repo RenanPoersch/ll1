@@ -41,7 +41,9 @@
               <td></td>
             </tr>
             @for (step of result ? result.steps.slice(0, visibleCount()) : []; track $index) {
-              <tr [class.selected]="selectedStep === $index" (click)="selectedStep = $index">
+              <tr [class.selected]="selectedStep === $index"
+                [class.rejected]="finished && $last && result?.accepted === false"
+                (click)="selectedStep = $index">
                 <td><button type="button" class="step-number" [attr.aria-pressed]="selectedStep === $index"
                   [attr.aria-label]="'Selecionar passo ' + ($index + 1)"
                   (click)="selectedStep = $index">{{ $index + 1 }}</button></td>
