@@ -42,10 +42,21 @@ class AppComponent {
     return this.result?.steps[this.selectedStep]?.lookup;
   }
 
+  get finalAction(): string {
+    if (!this.result) return '';
+    const count = this.result.steps.length;
+    const status = this.result.accepted ? 'Aceito' : 'Rejeitado';
+    return `${status} em ${count} ${count === 1 ? 'passo' : 'passos'}`;
+  }
+
   run(mode: 'manual' | 'automatic'): void {
-    this.clearAnalysis();
+    if (mode === 'automatic' && (this.finished || this.timer !== undefined)) return;
+
+    if (mode === 'manual' || !this.result) {
+      this.clearAnalysis();
+      this.result = analyze(this.sentence);
+    }
     this.mode = mode;
-    this.result = analyze(this.sentence);
     this.advance();
     if (mode === 'automatic' && !this.finished) {
       this.timer = setInterval(() => this.advance(), 600);

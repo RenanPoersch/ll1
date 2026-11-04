@@ -47,7 +47,7 @@
                   (click)="selectedStep = $index">{{ $index + 1 }}</button></td>
                 <td><code>{{ step.stack }}</code></td>
                 <td><code>{{ step.input }}</code></td>
-                <td>{{ step.action }}</td>
+                <td>{{ finished && $last ? finalAction : step.action }}</td>
               </tr>
             }
           </tbody>
