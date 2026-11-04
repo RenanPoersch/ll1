@@ -11,7 +11,7 @@ npm install
 npm start
 ```
 
-Abra http://localhost:4200. Para gerar os arquivos estáticos, execute `npm run build`. Para testar o analisador, execute `npm test`.
+Abra http://localhost:4200. Para gerar os arquivos estáticos, execute `npm run build`.
 
 ## Usar a tela
 
