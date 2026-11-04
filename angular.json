@@ -13,11 +13,23 @@
             "index": "src/index.html",
             "tsConfig": "tsconfig.json",
             "styles": ["src/styles.scss"]
-          }
+          },
+          "configurations": {
+            "production": {},
+            "development": {
+              "optimization": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": { "buildTarget": "analisador:build" }
+          "configurations": {
+            "production": { "buildTarget": "analisador:build:production" },
+            "development": { "buildTarget": "analisador:build:development" }
+          },
+          "defaultConfiguration": "development"
         }
       }
     }
