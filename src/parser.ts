@@ -34,7 +34,7 @@ export function formatProduction(symbols: readonly string[], separator = ' '): s
 
 export function tableCell(symbol: NonTerminal, token: Terminal): string {
   const choice = table[symbol][token];
-  return choice === undefined ? '—' : formatProduction(grammar[symbol][choice]);
+  return choice === undefined ? '—' : formatProduction(grammar[symbol][choice], '');
 }
 
 export interface Step {
