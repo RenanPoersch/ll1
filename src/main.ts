@@ -1,15 +1,11 @@
 import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { analyze, generateSentence, type Analysis } from './parser';
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatToolbarModule],
+  imports: [FormsModule],
   templateUrl: './app.html',
 })
 class AppComponent {

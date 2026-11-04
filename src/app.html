@@ -1,14 +1,14 @@
-<mat-toolbar class="toolbar">Analisador LL(1)</mat-toolbar>
+<header class="toolbar">Analisador LL(1)</header>
 
 <main>
   <form class="sentence-form" (ngSubmit)="run()">
-    <mat-form-field appearance="outline" subscriptSizing="dynamic">
-      <mat-label>Sentença</mat-label>
-      <input matInput #input name="sentence" [(ngModel)]="sentence"
+    <div class="field">
+      <label for="sentence">Sentença</label>
+      <input id="sentence" #input name="sentence" [(ngModel)]="sentence"
         (ngModelChange)="result = null" autocomplete="off" spellcheck="false" maxlength="256">
-    </mat-form-field>
-    <button mat-flat-button type="submit">Analisar</button>
-    <button mat-stroked-button type="button" (click)="generate()">Gerar sentença</button>
+    </div>
+    <button class="button primary" type="submit">Analisar</button>
+    <button class="button outlined" type="button" (click)="generate()">Gerar sentença</button>
   </form>
 
   <div class="workspace">
@@ -39,7 +39,7 @@
             <strong>{{ analysis.accepted ? 'Sentença aceita' : 'Sentença rejeitada' }}</strong>
             @if (!analysis.accepted) { <span>{{ analysis.message }}</span> }
           </div>
-          <button mat-button type="button" (click)="reset(input)">Nova análise</button>
+          <button class="button text" type="button" (click)="reset(input)">Nova análise</button>
         </div>
       } @else {
         <p class="empty">Digite ou gere uma sentença e selecione Analisar.</p>
