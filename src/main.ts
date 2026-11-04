@@ -17,7 +17,7 @@ class AppComponent {
   private readonly trace = viewChild<ElementRef<HTMLElement>>('trace');
   private readonly injector = inject(Injector);
   private timer?: ReturnType<typeof setInterval>;
-  activePanel = 'grammar';
+  activePanel = 'parsing';
   readonly panels = [
     { id: 'grammar', label: 'Gramática' },
     { id: 'parsing', label: 'Tabela de parsing' },
@@ -38,8 +38,8 @@ class AppComponent {
     return this.result !== null && this.visibleCount() === this.result.steps.length;
   }
 
-  get selectedRule() {
-    return this.result?.steps[this.selectedStep]?.rule;
+  get selectedLookup() {
+    return this.result?.steps[this.selectedStep]?.lookup;
   }
 
   run(): void {

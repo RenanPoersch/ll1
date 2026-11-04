@@ -25,3 +25,11 @@ test('gera apenas sentenças reconhecidas pela própria gramática', () => {
     assert.equal(analyze(sentence).accepted, true, sentence);
   }
 });
+
+test('registra a célula de parsing somente quando há consulta', () => {
+  const { steps } = analyze('a+b');
+  assert.deepEqual(steps[0].lookup, { symbol: 'S', token: 'a' });
+  assert.equal(steps.find(step => step.action === 'Ler a').lookup, undefined);
+  assert.deepEqual(analyze('a+').steps.at(-1).lookup, { symbol: 'B', token: '$' });
+  assert.equal(analyze('x').steps[0].lookup, undefined);
+});

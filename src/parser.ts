@@ -41,7 +41,7 @@ export interface Step {
   stack: string;
   input: string;
   action: string;
-  rule?: NonTerminal;
+  lookup?: { symbol: NonTerminal; token: Terminal };
 }
 
 export interface Analysis {
@@ -68,7 +68,10 @@ export function analyze(sentence: string): Analysis {
   while (true) {
     const top = stack[stack.length - 1];
     const token = tokens[cursor];
-    const step = { stack: stack.slice().reverse().join(' '), input: tokens.slice(cursor).join(' ') };
+    const step: Omit<Step, 'action'> = {
+      stack: stack.slice().reverse().join(' '),
+      input: tokens.slice(cursor).join(' '),
+    };
     const reject = (message: string): Analysis => {
       steps.push({ ...step, action: message });
       return { accepted: false, message, steps };
@@ -84,13 +87,14 @@ export function analyze(sentence: string): Analysis {
     }
 
     if (isNonTerminal(top)) {
+      step.lookup = { symbol: top, token };
       const choice = table[top][token];
       if (choice === undefined) {
         const found = token === '$' ? 'fim da sentença' : '“' + token + '”';
         return reject('Não há regra para ' + top + ' com ' + found + '.');
       }
       const production = grammar[top][choice];
-      steps.push({ ...step, action: 'Expandir ' + top + ' → ' + formatProduction(production), rule: top });
+      steps.push({ ...step, action: 'Expandir ' + top + ' → ' + formatProduction(production) });
       stack.pop();
       stack.push(...[...production].reverse());
     } else {

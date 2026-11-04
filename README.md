@@ -16,8 +16,8 @@ Abra http://localhost:4200. Para gerar os arquivos estáticos, execute `npm run 
 ## Usar a tela
 
 - Digite uma expressão, como `(a+b)*b`, ou selecione **Gerar sentença**.
-- Selecione **Analisar**. A tabela mostra a pilha com o topo à esquerda, a entrada restante e a ação de cada passo. Role a tabela para ver todos os passos.
-- Selecione um passo de expansão para destacar a regra no painel de consulta.
+- Escolha **Passo a passo** ou **Automático** e selecione **Analisar**. No modo manual, use **Próximo passo** para avançar. No automático, um novo passo aparece a cada 600 ms.
+- A tabela mostra a pilha com o topo à esquerda, a entrada restante e a ação de cada passo. Selecione um passo anterior para rever a célula que ele consultou na tabela de parsing.
 - Para ver uma rejeição, experimente `a+`. Use **Nova análise** para limpar a entrada.
 
 O código da gramática e do analisador fica em `src/parser.ts`. O componente e a tela ficam em `src/main.ts` e `src/app.html`. Os estilos Material ficam em `src/styles.scss`.

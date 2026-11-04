@@ -74,7 +74,7 @@
         @case ('grammar') {
           <ol class="grammar">
             @for (symbol of nonTerminals; track symbol) {
-              <li [class.selected]="selectedRule === symbol">
+              <li [class.selected]="selectedLookup?.symbol === symbol">
                 <code>{{ symbol }} → @for (production of grammar[symbol]; track $index) {
                   @if (!$first) { <span class="alternative"> | </span> }{{ formatProduction(production) }}
                 }</code>
@@ -83,29 +83,41 @@
           </ol>
         }
         @case ('parsing') {
+          @let lookup = selectedLookup;
           <div class="reference-table" tabindex="0" aria-label="Tabela de parsing">
             <table>
-              <thead><tr><th scope="col">Regra</th>
-                @for (token of terminals; track token) { <th scope="col"><code>{{ token }}</code></th> }
+              <thead><tr><th scope="col">Símbolo</th>
+                @for (token of terminals; track token) {
+                  <th scope="col" [class.selected]="lookup?.token === token"><code>{{ token }}</code></th>
+                }
               </tr></thead>
               <tbody>
                 @for (symbol of nonTerminals; track symbol) {
-                  <tr [class.selected]="selectedRule === symbol">
-                    <th scope="row"><code>{{ symbol }}</code></th>
-                    @for (token of terminals; track token) { <td><code>{{ tableCell(symbol, token) }}</code></td> }
+                  <tr>
+                    <th scope="row" [class.selected]="lookup?.symbol === symbol"><code>{{ symbol }}</code></th>
+                    @for (token of terminals; track token) {
+                      <td [class.lookup-cell]="lookup?.symbol === symbol && lookup?.token === token">
+                        <code>{{ tableCell(symbol, token) }}</code>
+                      </td>
+                    }
                   </tr>
                 }
               </tbody>
             </table>
           </div>
+          @if (lookup) {
+            <p class="hint">Célula consultada <code>[{{ lookup.symbol }}, {{ lookup.token }}]</code></p>
+          } @else if (result) {
+            <p class="hint">Este passo não consulta a tabela de parsing.</p>
+          }
           <p class="hint">— indica que não há produção para essa combinação.</p>
         }
         @case ('sets') {
           <table class="sets">
-            <thead><tr><th scope="col">Regra</th><th scope="col">FIRST</th><th scope="col">FOLLOW</th></tr></thead>
+            <thead><tr><th scope="col">Símbolo</th><th scope="col">FIRST</th><th scope="col">FOLLOW</th></tr></thead>
             <tbody>
               @for (symbol of nonTerminals; track symbol) {
-                <tr [class.selected]="selectedRule === symbol">
+                <tr [class.selected]="selectedLookup?.symbol === symbol">
                   <th scope="row"><code>{{ symbol }}</code></th>
                   <td><code>{{ firstFollow[symbol].first }}</code></td>
                   <td><code>{{ firstFollow[symbol].follow }}</code></td>
