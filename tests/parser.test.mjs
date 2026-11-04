@@ -6,7 +6,8 @@ test('aceita expressões válidas e registra a pilha até o fim', () => {
   for (const sentence of ['a', 'b', 'a+b*a', '((a+b)*b)', ' a + b ']) {
     const result = analyze(sentence);
     assert.equal(result.accepted, true, sentence);
-    assert.deepEqual(result.steps[0].stack, 'S $');
+    assert.equal(result.steps[0].stack, '$ S');
+    assert.equal(result.steps[1].stack, '$ A B');
     assert.deepEqual(result.steps.at(-1), { stack: '$', input: '$', action: 'Aceitar' });
   }
 });

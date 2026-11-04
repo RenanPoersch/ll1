@@ -69,7 +69,7 @@ export function analyze(sentence: string): Analysis {
     const top = stack[stack.length - 1];
     const token = tokens[cursor];
     const step: Omit<Step, 'action'> = {
-      stack: stack.slice().reverse().join(' '),
+      stack: stack.join(' '),
       input: tokens.slice(cursor).join(' '),
     };
     const reject = (message: string): Analysis => {
