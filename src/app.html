@@ -53,16 +53,6 @@
           </tbody>
         </table>
       </div>
-      @if (result; as analysis) {
-        @if (finished) {
-          <div class="outcome">
-            <div class="notice" [class.rejected]="!analysis.accepted" role="status">
-              <strong>{{ analysis.accepted ? 'Sentença aceita' : 'Sentença rejeitada' }}</strong>
-              @if (!analysis.accepted) { <span>{{ analysis.message }}</span> }
-            </div>
-          </div>
-        }
-      }
     </section>
     <section class="reference" aria-labelledby="reference-title">
       <h2 id="reference-title">Consulta</h2>
@@ -121,6 +111,16 @@
               }
             </tbody>
           </table>
+        }
+      }
+      @if (result; as analysis) {
+        @if (finished) {
+          <div class="outcome">
+            <div class="notice" [class.rejected]="!analysis.accepted" role="status">
+              <strong>{{ analysis.accepted ? 'Sentença aceita' : 'Sentença rejeitada' }}</strong>
+              @if (!analysis.accepted) { <span>{{ analysis.message }}</span> }
+            </div>
+          </div>
         }
       }
     </section>
