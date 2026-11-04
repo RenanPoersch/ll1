@@ -1,31 +1,31 @@
-export const nonTerminals = ['E', 'E′', 'T', 'T′', 'F'] as const;
+export const nonTerminals = ['S', 'A', 'B', 'C', 'D'] as const;
 export const terminals = ['a', 'b', '+', '*', '(', ')', '$'] as const;
 type NonTerminal = typeof nonTerminals[number];
 type Terminal = typeof terminals[number];
 
 export const grammar: Record<NonTerminal, readonly (readonly string[])[]> = {
-  E: [['T', 'E′']],
-  'E′': [['+', 'T', 'E′'], []],
-  T: [['F', 'T′']],
-  'T′': [['*', 'F', 'T′'], []],
-  F: [['(', 'E', ')'], ['a'], ['b']],
+  S: [['B', 'A']],
+  A: [['+', 'B', 'A'], []],
+  B: [['D', 'C']],
+  C: [['*', 'D', 'C'], []],
+  D: [['(', 'S', ')'], ['a'], ['b']],
 };
 
 export const firstFollow: Record<NonTerminal, { first: string; follow: string }> = {
-  E: { first: '(, a, b', follow: '), $' },
-  'E′': { first: '+, ε', follow: '), $' },
-  T: { first: '(, a, b', follow: '+, ), $' },
-  'T′': { first: '*, ε', follow: '+, ), $' },
-  F: { first: '(, a, b', follow: '*, +, ), $' },
+  S: { first: '(, a, b', follow: '), $' },
+  A: { first: '+, ε', follow: '), $' },
+  B: { first: '(, a, b', follow: '+, ), $' },
+  C: { first: '*, ε', follow: '+, ), $' },
+  D: { first: '(, a, b', follow: '*, +, ), $' },
 };
 
 // Cada célula guarda o índice da produção em grammar.
 const table: Record<NonTerminal, Partial<Record<Terminal, number>>> = {
-  E: { '(': 0, a: 0, b: 0 },
-  'E′': { '+': 0, ')': 1, $: 1 },
-  T: { '(': 0, a: 0, b: 0 },
-  'T′': { '*': 0, '+': 1, ')': 1, $: 1 },
-  F: { '(': 0, a: 1, b: 2 },
+  S: { '(': 0, a: 0, b: 0 },
+  A: { '+': 0, ')': 1, $: 1 },
+  B: { '(': 0, a: 0, b: 0 },
+  C: { '*': 0, '+': 1, ')': 1, $: 1 },
+  D: { '(': 0, a: 1, b: 2 },
 };
 
 export function formatProduction(symbols: readonly string[]): string {
@@ -61,7 +61,7 @@ function isTerminal(token: string): token is Terminal {
 export function analyze(sentence: string): Analysis {
   const tokens = Array.from(sentence).filter(token => !/\s/u.test(token));
   tokens.push('$');
-  const stack = ['$', 'E'];
+  const stack = ['$', 'S'];
   const steps: Step[] = [];
   let cursor = 0;
 
@@ -105,7 +105,7 @@ export function analyze(sentence: string): Analysis {
   }
 }
 
-const closingProduction: Record<NonTerminal, number> = { E: 0, 'E′': 1, T: 0, 'T′': 1, F: 1 };
+const closingProduction: Record<NonTerminal, number> = { S: 0, A: 1, B: 0, C: 1, D: 1 };
 
 export function generateSentence(): string {
   function expand(symbol: string, depth: number): string {
@@ -114,5 +114,5 @@ export function generateSentence(): string {
     const choice = depth >= 6 ? closingProduction[symbol] : Math.floor(Math.random() * choices.length);
     return choices[choice].map(token => expand(token, depth + 1)).join('');
   }
-  return expand('E', 0);
+  return expand('S', 0);
 }
