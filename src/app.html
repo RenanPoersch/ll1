@@ -1,0 +1,49 @@
+<mat-toolbar class="toolbar">Analisador LL(1)</mat-toolbar>
+
+<main>
+  <form class="sentence-form" (ngSubmit)="run()">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Sentença</mat-label>
+      <input matInput #input name="sentence" [(ngModel)]="sentence"
+        (ngModelChange)="result = null" autocomplete="off" spellcheck="false" maxlength="256">
+    </mat-form-field>
+    <button mat-flat-button type="submit">Analisar</button>
+    <button mat-stroked-button type="button" (click)="generate()">Gerar sentença</button>
+  </form>
+
+  <div class="workspace">
+    <section class="analysis" aria-labelledby="steps-title">
+      <h1 id="steps-title">Passos da análise</h1>
+      @if (result; as analysis) {
+        <div class="trace" tabindex="0" aria-label="Histórico da análise">
+          <table>
+            <thead>
+              <tr><th scope="col">Passo</th><th scope="col">Pilha</th><th scope="col">Entrada</th><th scope="col">Ação</th></tr>
+            </thead>
+            <tbody>
+              @for (step of analysis.steps; track $index) {
+                <tr [class.selected]="selectedStep === $index" (click)="selectedStep = $index">
+                  <td><button type="button" class="step-number" [attr.aria-pressed]="selectedStep === $index"
+                    [attr.aria-label]="'Selecionar passo ' + ($index + 1)"
+                    (click)="selectedStep = $index">{{ $index + 1 }}</button></td>
+                  <td><code>{{ step.stack }}</code></td>
+                  <td><code>{{ step.input }}</code></td>
+                  <td>{{ step.action }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <div class="outcome">
+          <div class="notice" [class.rejected]="!analysis.accepted" role="status">
+            <strong>{{ analysis.accepted ? 'Sentença aceita' : 'Sentença rejeitada' }}</strong>
+            @if (!analysis.accepted) { <span>{{ analysis.message }}</span> }
+          </div>
+          <button mat-button type="button" (click)="reset(input)">Nova análise</button>
+        </div>
+      } @else {
+        <p class="empty">Digite ou gere uma sentença e selecione Analisar.</p>
+      }
+    </section>
+  </div>
+</main>
