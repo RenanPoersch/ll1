@@ -38,7 +38,7 @@
               <td>0</td>
               <td><code>$</code></td>
               <td>—</td>
-              <td>Pilha inicial</td>
+              <td></td>
             </tr>
             @for (step of result ? result.steps.slice(0, visibleCount()) : []; track $index) {
               <tr [class.selected]="selectedStep === $index" (click)="selectedStep = $index">
@@ -107,12 +107,6 @@
               </tbody>
             </table>
           </div>
-          @if (lookup) {
-            <p class="hint">Célula consultada <code>[{{ lookup.symbol }}, {{ lookup.token }}]</code></p>
-          } @else if (result) {
-            <p class="hint">Este passo não consulta a tabela de parsing.</p>
-          }
-          <p class="hint">— indica que não há produção para essa combinação.</p>
         }
         @case ('sets') {
           <table class="sets">
