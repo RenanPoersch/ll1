@@ -5,7 +5,7 @@
     <div class="field">
       <label for="sentence">Sentença</label>
       <input id="sentence" #input name="sentence" [(ngModel)]="sentence"
-        (ngModelChange)="result = null" autocomplete="off" spellcheck="false" maxlength="256">
+        (ngModelChange)="clearAnalysis()" autocomplete="off" spellcheck="false" maxlength="256">
     </div>
     <button class="button primary" type="submit">Analisar</button>
     <button class="button outlined" type="button" (click)="generate()">Gerar sentença</button>
@@ -14,14 +14,30 @@
   <div class="workspace">
     <section class="analysis" aria-labelledby="steps-title">
       <h1 id="steps-title">Passos da análise</h1>
+      <fieldset class="analysis-mode">
+        <legend>Modo de análise</legend>
+        <label><input type="radio" name="mode" [checked]="mode === 'manual'"
+          (change)="setMode('manual')"> Passo a passo</label>
+        <label><input type="radio" name="mode" [checked]="mode === 'automatic'"
+          (change)="setMode('automatic')"> Automático</label>
+      </fieldset>
       @if (result; as analysis) {
-        <div class="trace" tabindex="0" aria-label="Histórico da análise">
+        <div class="trace-controls">
+          @if (mode === 'manual' && !finished) {
+            <button class="button primary" type="button" (click)="advance()">Próximo passo</button>
+          }
+          @if (mode === 'automatic' && !finished) {
+            <span class="hint" role="status">Analisando automaticamente…</span>
+          }
+          <button class="button text" type="button" (click)="reset(input)">Nova análise</button>
+        </div>
+        <div class="trace" #trace tabindex="0" aria-label="Histórico da análise">
           <table>
             <thead>
               <tr><th scope="col">Passo</th><th scope="col">Pilha</th><th scope="col">Entrada</th><th scope="col">Ação</th></tr>
             </thead>
             <tbody>
-              @for (step of analysis.steps; track $index) {
+              @for (step of analysis.steps.slice(0, visibleCount()); track $index) {
                 <tr [class.selected]="selectedStep === $index" (click)="selectedStep = $index">
                   <td><button type="button" class="step-number" [attr.aria-pressed]="selectedStep === $index"
                     [attr.aria-label]="'Selecionar passo ' + ($index + 1)"
@@ -34,13 +50,14 @@
             </tbody>
           </table>
         </div>
-        <div class="outcome">
-          <div class="notice" [class.rejected]="!analysis.accepted" role="status">
-            <strong>{{ analysis.accepted ? 'Sentença aceita' : 'Sentença rejeitada' }}</strong>
-            @if (!analysis.accepted) { <span>{{ analysis.message }}</span> }
+        @if (finished) {
+          <div class="outcome">
+            <div class="notice" [class.rejected]="!analysis.accepted" role="status">
+              <strong>{{ analysis.accepted ? 'Sentença aceita' : 'Sentença rejeitada' }}</strong>
+              @if (!analysis.accepted) { <span>{{ analysis.message }}</span> }
+            </div>
           </div>
-          <button class="button text" type="button" (click)="reset(input)">Nova análise</button>
-        </div>
+        }
       } @else {
         <p class="empty">Digite ou gere uma sentença e selecione Analisar.</p>
       }
