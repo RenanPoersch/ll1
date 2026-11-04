@@ -23,9 +23,6 @@
           <button class="button text reset-analysis" type="button" (click)="reset(input)">Nova análise</button>
         }
       </div>
-      @if (result && mode === 'automatic' && !finished) {
-        <p class="hint" role="status">Analisando automaticamente…</p>
-      }
       <div class="trace" #trace tabindex="0" aria-label="Histórico da análise">
         <table>
           <thead>
